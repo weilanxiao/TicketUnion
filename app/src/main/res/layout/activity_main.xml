@@ -5,17 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".module.MainActivity">
 
     <FrameLayout
+        android:id="@+id/fragment_main_page_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_bar_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        app:menu="@menu/nav_item" />
+        app:itemTextColor="@drawable/nav_bar_color"
+        app:itemIconTint="@drawable/nav_bar_color"
+        app:menu="@menu/nav_bar_item" />
 
 </RelativeLayout>
