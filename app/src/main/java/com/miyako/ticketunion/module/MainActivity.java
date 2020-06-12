@@ -18,6 +18,7 @@ import com.miyako.ticketunion.utils.LogUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,15 +31,25 @@ public class MainActivity extends AppCompatActivity {
     private RedPacketFragment mRedPacketFragment;
     private SearchFragment mSearchFragment;
     private FragmentManager mFm;
+    private Unbinder mBind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        mBind = ButterKnife.bind(this);
         initView();
         initFragment();
         initListener();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBind != null) {
+            mBind.unbind();
+            mBind = null;
+        }
     }
 
     private void initView() {
