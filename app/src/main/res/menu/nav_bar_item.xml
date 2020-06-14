@@ -3,17 +3,17 @@
     <item
         android:id="@+id/menu_nav_home"
         android:icon="@mipmap/home_normal"
-        android:title="@string/text_home" />
+        android:title="@string/nav_home" />
     <item
         android:id="@+id/menu_nav_recommend"
         android:icon="@mipmap/recommend_normal"
-        android:title="@string/text_selected" />
+        android:title="@string/nav_selected" />
     <item
         android:id="@+id/menu_nav_red_packet"
         android:icon="@mipmap/red_packet_normal"
-        android:title="@string/text_red_packet" />
+        android:title="@string/nav_red_packet" />
     <item
         android:id="@+id/menu_nav_search"
         android:icon="@mipmap/search_normal"
-        android:title="@string/text_search" />
+        android:title="@string/nav_search" />
 </menu>

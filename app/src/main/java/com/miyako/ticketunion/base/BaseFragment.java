@@ -11,9 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.miyako.ticketunion.R;
-import com.miyako.ticketunion.utils.LogUtil;
+import com.miyako.ticketunion.utils.LogUtils;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public abstract class BaseFragment extends Fragment {
@@ -35,9 +36,9 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LogUtil.d(TAG, "onCreateView");
+        LogUtils.d(TAG, "onCreateView");
         mCurrentState = State.NONE;
-        View rootView = inflater.inflate(R.layout.base_fragment_layout, container, false);
+        View rootView = loadRootView(inflater, container);
         mBaseContianer = rootView.findViewById(R.id.base_container);
         loadStatesView(inflater, container);
         mBind = ButterKnife.bind(this, rootView);
@@ -45,6 +46,16 @@ public abstract class BaseFragment extends Fragment {
         initPresenter();
         loadData();
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtils.d(TAG, "onCreateView");
+    }
+
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.base_fragment_layout, container, false);
     }
 
     /**
@@ -100,7 +111,7 @@ public abstract class BaseFragment extends Fragment {
      * @return 完成view
      */
     protected View loadSuccess(LayoutInflater inflater, ViewGroup container) {
-        LogUtil.d(TAG, "loadRootView");
+        LogUtils.d(TAG, "loadRootView");
         int resId = getRootViewResId();
         return inflater.inflate(resId, container, false);
     }
@@ -132,35 +143,45 @@ public abstract class BaseFragment extends Fragment {
      * @param rootView view
      */
     protected void initView(View rootView) {
-        LogUtil.d(TAG, "initView");
+        LogUtils.d(TAG, "initView");
     }
 
     /**
      * 初始化presenter
      */
     protected void initPresenter() {
-        LogUtil.d(TAG, "initPresenter");
+        LogUtils.d(TAG, "initPresenter");
     }
 
     /**
      * 界面加载数据
      */
     protected void loadData() {
-        LogUtil.d(TAG, "loadData");
+        LogUtils.d(TAG, "loadData");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        LogUtil.d(TAG, "onDestroyView");
+        LogUtils.d(TAG, "onDestroyView");
         release();
+    }
+
+    @OnClick({R.id.layout_net_error})
+    public void netError(View view) {
+        LogUtils.d(TAG, "on retry");
+        onNetError();
+    }
+
+    protected void onNetError() {
+        LogUtils.d(TAG, "on retry");
     }
 
     /**
      * 释放资源
      */
     protected void release() {
-        LogUtil.d(TAG, "release");
+        LogUtils.d(TAG, "release");
         if (mBind != null) {
             mBind.unbind();
             mBind = null;

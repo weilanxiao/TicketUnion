@@ -2,7 +2,7 @@ package com.miyako.ticketunion.utils;
 
 import android.util.Log;
 
-public class LogUtil {
+public class LogUtils {
 
     private static final String TAG = "LogUtil";
 
@@ -32,19 +32,19 @@ public class LogUtil {
 
     public static void i(String tag, String msg) {
         if (currentLev >= INFO) {
-            Log.d(tag, msg);
+            Log.i(tag, msg);
         }
     }
 
     public static void w(String tag, String msg) {
         if (currentLev >= WARNING) {
-            Log.d(tag, msg);
+            Log.w(tag, msg);
         }
     }
 
     public static void e(String tag, String msg) {
         if (currentLev >= ERROR) {
-            Log.d(tag, msg);
+            Log.e(tag, msg);
         }
     }
 }

@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">TicketUnion</string>
-    <string name="text_home">首页</string>
-    <string name="text_selected">精选</string>
-    <string name="text_red_packet">特惠</string>
-    <string name="text_search">搜索</string>
+    <string name="nav_home">首页</string>
+    <string name="nav_selected">精选</string>
+    <string name="nav_red_packet">特惠</string>
+    <string name="nav_search">搜索</string>
     <string name="et_search_hint">请输入想搜的宝贝</string>
     <string name="tv_logo_title">领卷联盟</string>
+    <string name="net_error_and_retry">网络错误，请点击重试...</string>
 </resources>

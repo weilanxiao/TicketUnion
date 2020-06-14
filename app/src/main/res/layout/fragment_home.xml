@@ -46,19 +46,8 @@
 
     </RelativeLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabL_home_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        app:tabBackground="@color/colorPrimary"
-        app:tabTextColor="@color/colorTabNormal"
-        app:tabSelectedTextColor="@color/colorTabSelected"
-        app:tabRippleColor="@color/colorTabNormal"
-        app:tabIndicatorColor="@color/colorTabSelected"
-        app:tabMode="scrollable"/>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/vp_home"
+    <FrameLayout
+        android:id="@+id/base_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

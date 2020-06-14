@@ -1,20 +1,17 @@
 package com.miyako.ticketunion.module.home;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.miyako.ticketunion.R;
 import com.miyako.ticketunion.base.BaseFragment;
 import com.miyako.ticketunion.model.domain.Categories;
-import com.miyako.ticketunion.utils.LogUtil;
+import com.miyako.ticketunion.module.adapter.HomePagerAdapter;
+import com.miyako.ticketunion.utils.LogUtils;
 
 import butterknife.BindView;
 
@@ -30,7 +27,12 @@ public class HomeFragment extends BaseFragment implements HomeContract.IHomeView
 
     @Override
     protected int getRootViewResId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_home_container;
+    }
+
+    @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
@@ -52,7 +54,15 @@ public class HomeFragment extends BaseFragment implements HomeContract.IHomeView
     protected void loadData() {
         super.loadData();
         setUpState(State.LOADING);
-        mPresenter.getCategory();
+        mPresenter.getCategories();
+    }
+
+    @Override
+    protected void onNetError() {
+        super.onNetError();
+        if (mPresenter != null) {
+            mPresenter.getCategories();
+        }
     }
 
     @Override
@@ -66,7 +76,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.IHomeView
 
     @Override
     public void onCategoriesLoaded(Categories categories) {
-        LogUtil.d(TAG, "onCategoriesLoaded");
+        LogUtils.d(TAG, "onCategoriesLoaded");
         if (categories == null || categories.getData().size()==0) {
             setUpState(State.EMPTY);
         }

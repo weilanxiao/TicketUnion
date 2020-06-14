@@ -6,9 +6,27 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/layout_net_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="错误"/>
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/wifi"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="12sp"
+            android:text="@string/net_error_and_retry"/>
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

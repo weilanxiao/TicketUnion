@@ -14,7 +14,7 @@ import com.miyako.ticketunion.module.home.HomeFragment;
 import com.miyako.ticketunion.module.recommend.RecommendFragment;
 import com.miyako.ticketunion.module.redPacket.RedPacketFragment;
 import com.miyako.ticketunion.module.search.SearchFragment;
-import com.miyako.ticketunion.utils.LogUtil;
+import com.miyako.ticketunion.utils.LogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,19 +69,19 @@ public class MainActivity extends AppCompatActivity {
         mNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_nav_home:
-                    LogUtil.d(TAG, "切换到首页");
+                    LogUtils.d(TAG, "切换到首页");
                     switchFragment(mHomeFragment);
                     break;
                 case R.id.menu_nav_recommend:
-                    LogUtil.d(TAG, "切换到推荐");
+                    LogUtils.d(TAG, "切换到推荐");
                     switchFragment(mRecommendFragment);
                     break;
                 case R.id.menu_nav_red_packet:
-                    LogUtil.d(TAG, "切换到红包");
+                    LogUtils.d(TAG, "切换到红包");
                     switchFragment(mRedPacketFragment);
                     break;
                 case R.id.menu_nav_search:
-                    LogUtil.d(TAG, "切换到搜索");
+                    LogUtils.d(TAG, "切换到搜索");
                     switchFragment(mSearchFragment);
                     break;
             }

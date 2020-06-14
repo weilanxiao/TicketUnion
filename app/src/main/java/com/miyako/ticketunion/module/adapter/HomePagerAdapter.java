@@ -1,6 +1,4 @@
-package com.miyako.ticketunion.module.home;
-
-import android.util.Log;
+package com.miyako.ticketunion.module.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,7 +7,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.miyako.ticketunion.model.domain.Categories;
-import com.miyako.ticketunion.utils.LogUtil;
+import com.miyako.ticketunion.module.home.category.CategoryPagerFragment;
+import com.miyako.ticketunion.utils.LogUtils;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return new HomePagerFragment();
+        return CategoryPagerFragment.newInstance(mList.get(position));
     }
 
     @Override
@@ -40,7 +39,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     }
 
     public void setCategories(Categories categories) {
-        LogUtil.d(TAG, "setCategories");
+        LogUtils.d(TAG, "setCategories");
         if (mList == null) {
             mList = categories.getData();
         } else {

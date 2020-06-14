@@ -1,6 +1,6 @@
 package com.miyako.ticketunion.utils;
 
-import com.miyako.ticketunion.base.MyApplication;
+import com.miyako.ticketunion.base.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -12,9 +12,9 @@ public class RetrofitManager {
     private final Retrofit mRetrofit;
 
     private RetrofitManager() {
-        LogUtil.i(TAG, "创建Retrofit实例");
+        LogUtils.i(TAG, "创建Retrofit实例");
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(MyApplication.BASE_URL)
+                .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

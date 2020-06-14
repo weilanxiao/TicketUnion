@@ -1,28 +1,19 @@
 package com.miyako.ticketunion.module.home;
 
+import com.miyako.ticketunion.base.IBasePresenter;
+import com.miyako.ticketunion.base.IBaseView;
 import com.miyako.ticketunion.model.domain.Categories;
 
 public class HomeContract {
 
-    public interface IHomePresenter {
-
-        /**
-         * 绑定UI
-         */
-        void bind(IHomeView view);
-
-        /**
-         * 解除绑定
-         */
-        void unBind(IHomeView view);
-
+    public interface IHomePresenter extends IBasePresenter<IHomeView> {
         /**
          * 获取商品数据
          */
-        void getCategory();
+        void getCategories();
     }
 
-    public interface IHomeView {
+    public interface IHomeView extends IBaseView {
 
         /**
          * 设置数据
