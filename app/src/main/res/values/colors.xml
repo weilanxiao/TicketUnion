@@ -7,4 +7,6 @@
 
     <color name="colorTabNormal">#99ffffff</color>
     <color name="colorTabSelected">#ffffff</color>
+    <color name="colorTMail">#d0021b</color>
+    <color name="colorPagerBg">#efeeee</color>
 </resources>

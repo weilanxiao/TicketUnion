@@ -7,4 +7,9 @@
     <string name="et_search_hint">请输入想搜的宝贝</string>
     <string name="tv_logo_title">领卷联盟</string>
     <string name="net_error_and_retry">网络错误，请点击重试...</string>
+    <string name="format_goods_title">%s</string>
+    <string name="format_goods_off_prise">省%1$d元</string>
+    <string name="format_goods_after_prise">%1$.02f</string>
+    <string name="format_goods_cur_prise">￥%1$s</string>
+    <string name="format_goods_sell_count">%1$d人已购买</string>
 </resources>

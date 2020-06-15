@@ -3,12 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:gravity="center">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="首页内容"/>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabL_home_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:tabBackground="@color/colorPrimary"
+        app:tabTextColor="@color/colorTabNormal"
+        app:tabSelectedTextColor="@color/colorTabSelected"
+        app:tabRippleColor="@color/colorTabNormal"
+        app:tabIndicatorColor="@color/colorTabSelected"
+        app:tabMode="scrollable"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

@@ -20,6 +20,7 @@ public class HomePresenter implements HomeContract.IHomePresenter {
 
     @Override
     public void getCategories() {
+        mView.onLoading();
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
         Call<Categories> task = api.getCategories();
@@ -34,12 +35,14 @@ public class HomePresenter implements HomeContract.IHomePresenter {
                     mView.onCategoriesLoaded(categories);
                 } else {
                     LogUtils.d(TAG, "请求失败");
+                    mView.onError(0, "网络错误");
                 }
             }
 
             @Override
             public void onFailure(Call<Categories> call, Throwable t) {
                 LogUtils.e(TAG, "请求错误:"+t.getMessage());
+                mView.onError(0, "网络错误");
             }
         });
     }

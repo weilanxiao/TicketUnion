@@ -27,7 +27,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.IHomeView
 
     @Override
     protected int getRootViewResId() {
-        return R.layout.fragment_home_container;
+        return R.layout.fragment_home_pager;
     }
 
     @Override
@@ -53,7 +53,6 @@ public class HomeFragment extends BaseFragment implements HomeContract.IHomeView
     @Override
     protected void loadData() {
         super.loadData();
-        setUpState(State.LOADING);
         mPresenter.getCategories();
     }
 
@@ -84,5 +83,20 @@ public class HomeFragment extends BaseFragment implements HomeContract.IHomeView
             mHomePagerAdapter.setCategories(categories);
             setUpState(State.SUCCESS);
         }
+    }
+
+    @Override
+    public void onLoading() {
+        setUpState(State.LOADING);
+    }
+
+    @Override
+    public void onError(int errorCode, String msg) {
+
+    }
+
+    @Override
+    public void onEmpty() {
+
     }
 }

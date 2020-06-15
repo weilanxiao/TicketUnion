@@ -37,19 +37,9 @@ public class CategoryPagerContract {
         void onContentLoaded(List<HomePagerContent.DataBean> contentList);
 
         /**
-         * 加载中
+         * 返回当前Id
          */
-        void onLoading(int categoryId);
-
-        /**
-         * 网络错误
-         */
-        void onError(int categoryId);
-
-        /**
-         * 空数据
-         */
-        void onEmpty(int categoryId);
+        int getMaterialId();
 
         /**
          * 加载更多成功
@@ -59,12 +49,12 @@ public class CategoryPagerContract {
         /**
          * 加载更多错误
          */
-        void onLoadMoreError(int categoryId);
+        void onLoadMoreError();
 
         /**
          * 加载更多数据为空
          */
-        void onLoadMoreEmpty(int categoryId);
+        void onLoadMoreEmpty();
 
         /**
          * 加载更多轮播图

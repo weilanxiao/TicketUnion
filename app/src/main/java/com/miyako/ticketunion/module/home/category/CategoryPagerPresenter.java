@@ -1,16 +1,15 @@
 package com.miyako.ticketunion.module.home.category;
 
-import android.util.Log;
-
 import com.miyako.ticketunion.model.api.Api;
-import com.miyako.ticketunion.model.domain.Categories;
 import com.miyako.ticketunion.model.domain.HomePagerContent;
 import com.miyako.ticketunion.utils.LogUtils;
 import com.miyako.ticketunion.utils.RetrofitManager;
 import com.miyako.ticketunion.utils.UrlUtils;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -23,7 +22,7 @@ public class CategoryPagerPresenter implements CategoryPagerContract.IHomePagerP
     private static final String TAG = "HomePagerPresenter";
     private static final int DEFAULT_PAGE = 1;
 
-    private CategoryPagerContract.IHomePagerView mView;
+    private List<CategoryPagerContract.IHomePagerView> mViewList;
     private Map<Integer, Integer> pagesInfo = new HashMap<>();
 
     private CategoryPagerPresenter() {}
@@ -39,6 +38,9 @@ public class CategoryPagerPresenter implements CategoryPagerContract.IHomePagerP
 
     @Override
     public void getContentByCategoryId(int categoryId) {
+        for (CategoryPagerContract.IHomePagerView view : mViewList) {
+            if(categoryId == view.getMaterialId()) view.onLoading();
+        }
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
         Integer targetPage = pagesInfo.get(categoryId);
@@ -58,17 +60,39 @@ public class CategoryPagerPresenter implements CategoryPagerContract.IHomePagerP
                     LogUtils.d(TAG, "请求成功");
                     HomePagerContent pagerContent = response.body();
                     LogUtils.i(TAG, pagerContent.toString());
+                    // 更新UI
+                    handleCategoryContent(categoryId, pagerContent);
 //                    mView.onCategoriesLoaded(categories);
                 } else {
                     LogUtils.d(TAG, "请求失败");
+                    handleNetError(categoryId);
                 }
             }
 
             @Override
             public void onFailure(Call<HomePagerContent> call, Throwable t) {
                 LogUtils.e(TAG, "请求错误:"+t.getMessage());
+                handleNetError(categoryId);
             }
         });
+    }
+
+    private void handleNetError(int categoryId) {
+        for (CategoryPagerContract.IHomePagerView view : mViewList) {
+            if (categoryId == view.getMaterialId()) view.onError(0, "网络错误");
+        }
+    }
+
+    private void handleCategoryContent(int categoryId, HomePagerContent pagerContent) {
+        for (CategoryPagerContract.IHomePagerView view : mViewList) {
+            if(categoryId == view.getMaterialId()) {
+                if(pagerContent==null||pagerContent.getData().size()==0) {
+                    view.onEmpty();
+                } else {
+                    view.onContentLoaded(pagerContent.getData());
+                }
+            }
+        }
     }
 
     @Override
@@ -85,15 +109,20 @@ public class CategoryPagerPresenter implements CategoryPagerContract.IHomePagerP
     public void bind(CategoryPagerContract.IHomePagerView view) {
         if (view != null) {
             LogUtils.d(TAG, "bind");
-            mView = view;
+            if (mViewList == null) {
+                mViewList = new ArrayList<>();
+            }
+            if (!mViewList.contains(view)) {
+                mViewList.add(view);
+            }
         }
     }
 
     @Override
     public void unBind(CategoryPagerContract.IHomePagerView view) {
-        if (mView != null && mView == view) {
+        if (mViewList != null && mViewList.contains(view)) {
             LogUtils.d(TAG, "unBind");
-            mView = null;
+            mViewList.remove(view);
         }
     }
 }
