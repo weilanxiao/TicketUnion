@@ -43,6 +43,7 @@ public abstract class BaseFragment extends Fragment {
         loadStatesView(inflater, container);
         mBind = ButterKnife.bind(this, rootView);
         initView(rootView);
+        initListener();
         initPresenter();
         loadData();
         return rootView;
@@ -144,6 +145,13 @@ public abstract class BaseFragment extends Fragment {
      */
     protected void initView(View rootView) {
         LogUtils.d(TAG, "initView");
+    }
+
+    /**
+     * 初始化监听器
+     */
+    protected void initListener() {
+        LogUtils.d(TAG, "initListener");
     }
 
     /**

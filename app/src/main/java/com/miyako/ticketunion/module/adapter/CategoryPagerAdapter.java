@@ -1,5 +1,6 @@
 package com.miyako.ticketunion.module.adapter;
 
+import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,16 +27,25 @@ public class CategoryPagerAdapter extends RecyclerView.Adapter<CategoryPagerAdap
 
     private static final String TAG = "CategoryPagerAdapter";
     private List<HomePagerContent.DataBean> mList;
+    private int cnt = 0;
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_pager_content, parent, false);
-        return new ViewHolder(view);
+        LogUtils.d(TAG, "onCreateViewHolder"+"..."+(cnt++));
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_pager_content, parent, false);
+//        if (viewType == 1){//标题
+//            item.setTag(true);
+//        }else{
+//            item.setTag(false);
+//        }
+        return new ViewHolder(item);
+//        return ViewHolder.getViewHolder(parent, viewType);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        LogUtils.d(TAG, "onBindViewHolder");
         HomePagerContent.DataBean bean = mList.get(position);
         holder.setData(bean);
     }
@@ -46,6 +56,7 @@ public class CategoryPagerAdapter extends RecyclerView.Adapter<CategoryPagerAdap
     }
 
     public void setData(List<HomePagerContent.DataBean> contentList) {
+        LogUtils.d(TAG, "setData");
         if (mList == null) {
             mList = new ArrayList<>(contentList.size());
         }
@@ -54,8 +65,16 @@ public class CategoryPagerAdapter extends RecyclerView.Adapter<CategoryPagerAdap
         notifyDataSetChanged();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public void addData(List<HomePagerContent.DataBean> contentList) {
+        if (mList == null) {
+            mList = new ArrayList<>(contentList.size());
+        }
+        int start = mList.size();
+        mList.addAll(contentList);
+        notifyItemRangeChanged(start, contentList.size());
+    }
 
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_item_goods_cover)
         ImageView mIvCover;
@@ -72,14 +91,34 @@ public class CategoryPagerAdapter extends RecyclerView.Adapter<CategoryPagerAdap
         @BindView(R.id.tv_item_goods_sell_count)
         TextView mTvCount;
 
+        private View mConvertView;
+
+        public ViewHolder(Context context, View itemView, ViewGroup parent) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            mConvertView = itemView;
+        }
+
+        public static ViewHolder getViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_pager_content, parent, false);
+            return new ViewHolder(parent.getContext(), itemView, parent);
+        }
+
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
+
         public void setData(HomePagerContent.DataBean bean) {
+            ViewGroup.LayoutParams params = mIvCover.getLayoutParams();
+            int width = params.width;
+            int height = params.height;
+            int size = Math.max(width, height) / 2;
+            String url = UrlUtils.coverPath(bean.getPict_url()+String.format("_%dx%d.jpg", size, size));
+            LogUtils.d(TAG, "cover url:"+url);
             Glide.with(itemView.getContext())
-                    .load(UrlUtils.coverPath(bean.getPict_url()))
+                    .load(url)
                     .into(mIvCover);
             mTvTitle.setText(itemView.getContext().getString(R.string.format_goods_title, bean.getTitle()));
             long offPrise = bean.getCoupon_amount();

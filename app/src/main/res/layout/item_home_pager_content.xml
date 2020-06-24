@@ -11,6 +11,7 @@
         android:id="@+id/iv_item_goods_cover"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:padding="2dp"
         android:src="@mipmap/wifi"/>
     
     <LinearLayout

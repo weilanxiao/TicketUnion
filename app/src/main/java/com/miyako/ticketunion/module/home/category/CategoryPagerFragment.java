@@ -1,22 +1,39 @@
 package com.miyako.ticketunion.module.home.category;
 
 import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.miyako.ticketunion.R;
 import com.miyako.ticketunion.base.BaseFragment;
 import com.miyako.ticketunion.base.Constants;
+import com.miyako.ticketunion.custom.TbNestedScrollView;
 import com.miyako.ticketunion.model.domain.Categories;
 import com.miyako.ticketunion.model.domain.HomePagerContent;
 import com.miyako.ticketunion.module.adapter.CategoryPagerAdapter;
+import com.miyako.ticketunion.module.adapter.LooperPagerAdapter;
 import com.miyako.ticketunion.utils.LogUtils;
+import com.miyako.ticketunion.utils.SizeUtils;
+import com.miyako.ticketunion.utils.ToastUtils;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 
@@ -29,7 +46,26 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
 
     @BindView(R.id.home_pager_content_list)
     RecyclerView mContentListView;
+    @BindView(R.id.home_pager_content_looper)
+    ViewPager mVpLooper;
+    @BindView(R.id.tv_home_pager_title_part)
+    TextView mTvTitle;
+    @BindView(R.id.layout_home_pager_looper_point)
+    LinearLayout mLayoutLooperPoint;
+    @BindView(R.id.layout_home_pager)
+    LinearLayout mLayoutHomePager;
+    @BindView(R.id.home_pager_tbNested)
+    TbNestedScrollView mHomePagerTb;
+    @BindView(R.id.layout_home_pager_header)
+    LinearLayout mLayoutHomePagerHeader;
+//     刷新框架
+//    @BindView(R.id.layout_home_pager_refresh)
+//    TwinklingRefreshLayout mLayoutRefresh;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
+
     private CategoryPagerAdapter mAdapter;
+    private LooperPagerAdapter mLooperAdapter;
 
     public static CategoryPagerFragment newInstance(Categories.DataBean category) {
         CategoryPagerFragment homePagerFragment = new CategoryPagerFragment();
@@ -58,8 +94,106 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
             }
         });
         mAdapter = new CategoryPagerAdapter();
+        // 设置数据适配器
         mContentListView.setAdapter(mAdapter);
         setUpState(State.SUCCESS);
+        mLooperAdapter = new LooperPagerAdapter();
+        // 设置轮播图适配器
+        mVpLooper.setAdapter(mLooperAdapter);
+//        mVpLooper.setOffscreenPageLimit(3);
+
+        // 设置刷新相关内容，下拉刷新，上拉加载更多
+//        mLayoutRefresh.setEnableRefresh(false);
+//        mLayoutRefresh.setEnableLoadmore(true);
+//        mHomePagerTb.setNestedScrollingEnabled(false);
+//        mRefreshLayout.setNestedScrollingEnabled(false);
+        mRefreshLayout.setEnableRefresh(false);
+        mRefreshLayout.setEnableLoadMore(false);
+        mRefreshLayout.setRefreshFooter(new ClassicsFooter(getContext()));
+        mHomePagerTb.setHeaderHeight(mLayoutHomePagerHeader.getMeasuredHeight());
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+
+        // 设置根布局监听器
+        mLayoutHomePager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (mLayoutHomePagerHeader == null) {
+                    return;
+                }
+                int headerHeight = mLayoutHomePagerHeader.getMeasuredHeight();
+                if (headerHeight != 0) {
+                    mHomePagerTb.setHeaderHeight(headerHeight);
+                }
+                int height = mLayoutHomePager.getMeasuredHeight();
+//                int width = mLayoutHomePager.getMeasuredWidth();
+//                LogUtils.d(TAG, "height:"+height+", width:"+width);
+                // 设置滑动内容只有列表滑动，轮播图不滑动
+                ViewGroup.LayoutParams layoutParams = mContentListView.getLayoutParams();
+                layoutParams.height = height;
+                mContentListView.setLayoutParams(layoutParams);
+                if (height != 0) {
+                    // 移除当前视图
+                    mLayoutHomePager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
+
+        // 轮播图滑动监听器
+        mVpLooper.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (mLooperAdapter.getDataSize()==0) return;
+                int target = position % mLooperAdapter.getDataSize();
+                // 切换指示器
+                updateLooperPoint(target);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+//        mLayoutRefresh.setOnRefreshListener(new RefreshListenerAdapter() {
+//            @Override
+//            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+//                super.onLoadMore(refreshLayout);
+//                LogUtils.d(TAG, "加载更多...");
+//                if (mPresenter != null) {
+//                    mPresenter.getContentMore(mMaterialId);
+//                }
+//            }
+//        });
+
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                LogUtils.d(TAG, "加载更多...");
+                if (mPresenter != null) {
+                    mPresenter.getContentMore(mMaterialId);
+                }
+            }
+        });
+    }
+
+    private void updateLooperPoint(int position) {
+        for (int i = 0; i < mLayoutLooperPoint.getChildCount(); i++) {
+            View point = mLayoutLooperPoint.getChildAt(i);
+            if (i==position) {
+                point.setBackgroundResource(R.drawable.shape_looper_point_selected);
+            } else {
+                point.setBackgroundResource(R.drawable.shape_looper_point_normal);
+            }
+        }
     }
 
     @Override
@@ -78,6 +212,7 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
         LogUtils.i(TAG, "title:"+title);
         LogUtils.i(TAG, "id:"+ mMaterialId);
         mPresenter.getContentByCategoryId(mMaterialId);
+        mTvTitle.setText(getString(R.string.format_home_pager_title_part, title));
     }
 
     @Override
@@ -94,6 +229,7 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
         // TODO: 2020-06-14-0014 更新UI
         setUpState(State.SUCCESS);
         mAdapter.setData(contentList);
+        mRefreshLayout.setEnableLoadMore(true);
     }
 
     @Override
@@ -118,11 +254,22 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
 
     @Override
     public void onLoadMoreSuccess(List<HomePagerContent.DataBean> contentList) {
+        mAdapter.addData(contentList);
+//        if (mLayoutRefresh != null) {
+//            LogUtils.d(TAG, "onLoadMoreSuccess");
+//            ToastUtils.showToast("加载了"+contentList.size()+"条数据");
+//            mLayoutRefresh.finishLoadmore();
+//        }
 
+        if (mRefreshLayout != null) {
+            LogUtils.d(TAG, "onLoadMoreSuccess");
+            ToastUtils.showToast("加载了"+contentList.size()+"条数据");
+            mRefreshLayout.finishLoadMore();
+        }
     }
 
     @Override
-    public void onLoadMoreError() {
+    public void onLoadMoreError(int errorCode, String msg) {
 
     }
 
@@ -133,6 +280,31 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
 
     @Override
     public void onLooperLoaded(List<HomePagerContent.DataBean> contentList) {
+        LogUtils.d(TAG, "onLooperLoaded");
+        mLooperAdapter.setData(contentList);
+        // 设置无限轮播图中间点
+        int dx = Integer.MAX_VALUE / 2 % contentList.size();
+        mVpLooper.setCurrentItem((Integer.MAX_VALUE / 2) - dx);
 
+        // 动态添加轮播图指示器
+        mLayoutLooperPoint.removeAllViews();
+
+        for (int i = 0; i < contentList.size(); i++) {
+            View point = new View(getContext());
+            int size = SizeUtils.dip2px(Objects.requireNonNull(getContext()), 8);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
+            params.leftMargin = SizeUtils.dip2px(getContext(), 5);
+            params.rightMargin = SizeUtils.dip2px(getContext(), 5);
+            point.setLayoutParams(params);
+            if (i == 0) {
+                point.setBackgroundResource(R.drawable.shape_looper_point_selected);
+                LogUtils.d(TAG, "select point:"+i);
+            } else {
+                point.setBackgroundResource(R.drawable.shape_looper_point_normal);
+                LogUtils.d(TAG, "normal point:"+i);
+            }
+
+            mLayoutLooperPoint.addView(point);
+        }
     }
 }

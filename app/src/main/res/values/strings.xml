@@ -12,4 +12,5 @@
     <string name="format_goods_after_prise">%1$.02f</string>
     <string name="format_goods_cur_prise">￥%1$s</string>
     <string name="format_goods_sell_count">%1$d人已购买</string>
+    <string name="format_home_pager_title_part">%1$s</string>
 </resources>

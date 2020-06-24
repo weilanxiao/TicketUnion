@@ -49,7 +49,7 @@ public class CategoryPagerContract {
         /**
          * 加载更多错误
          */
-        void onLoadMoreError();
+        void onLoadMoreError(int errorCode, String msg);
 
         /**
          * 加载更多数据为空

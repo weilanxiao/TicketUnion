@@ -89,10 +89,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private BaseFragment lastFragment;
+
     private void switchFragment(BaseFragment fragment) {
 //        LogUtil.d(TAG, "切换到搜索");
         FragmentTransaction fragmentTransaction = mFm.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_main_page_container, fragment);
+        if (!fragment.isAdded()) {
+            fragmentTransaction.add(R.id.fragment_main_page_container, fragment);
+        } else {
+            fragmentTransaction.show(fragment);
+        }
+        if (lastFragment != null && fragment!=lastFragment) {
+            fragmentTransaction.hide(lastFragment);
+        }
+        lastFragment = fragment;
+//        fragmentTransaction.replace(R.id.fragment_main_page_container, fragment);
         fragmentTransaction.commit();
     }
 }
