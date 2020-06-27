@@ -7,7 +7,11 @@ public class UrlUtils {
     }
 
     public static String coverPath(String path) {
-        return "https:" + path;
+        if(path.startsWith("http") || path.startsWith("https")) {
+            return path;
+        } else {
+            return "https:" + path;
+        }
     }
 
     public static String getTicketUrl(String url) {

@@ -13,4 +13,5 @@
     <string name="format_goods_cur_prise">￥%1$s</string>
     <string name="format_goods_sell_count">%1$d人已购买</string>
     <string name="format_home_pager_title_part">%1$s</string>
+    <string name="tv_tao_kou_ling">淘口令</string>
 </resources>

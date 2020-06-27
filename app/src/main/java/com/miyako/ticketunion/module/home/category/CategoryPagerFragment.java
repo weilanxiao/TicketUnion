@@ -230,6 +230,7 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
         String title = item.getTitle();
         String url = item.getClick_url();
         String cover = item.getPict_url();
+        // 为什么请求数据不在自己的activity中呢?
         PresenterManager.getInstance().getTicketPresenter().getTicket(title, url, cover);
         startActivity(new Intent(getContext(), TicketActivity.class));
     }

@@ -73,6 +73,11 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void initPresenter() {
+
+    }
+
     private BaseFragment lastFragment;
 
     private void switchFragment(BaseFragment fragment) {

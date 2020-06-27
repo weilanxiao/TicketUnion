@@ -21,7 +21,7 @@ public abstract class BaseFragment extends Fragment {
 
     protected String TAG = this.getClass().getSimpleName();
     private Unbinder mBind;
-    private FrameLayout mBaseContianer;
+    private FrameLayout mBaseContainer;
 
     private State mCurrentState;
     private View mLoadingView;
@@ -39,7 +39,7 @@ public abstract class BaseFragment extends Fragment {
         LogUtils.d(TAG, "onCreateView");
         mCurrentState = State.NONE;
         View rootView = loadRootView(inflater, container);
-        mBaseContianer = rootView.findViewById(R.id.base_container);
+        mBaseContainer = rootView.findViewById(R.id.base_container);
         loadStatesView(inflater, container);
         mBind = ButterKnife.bind(this, rootView);
         initView(rootView);
@@ -68,19 +68,19 @@ public abstract class BaseFragment extends Fragment {
 
         // 完成界面
         mSuccessView = loadSuccess(inflater, container);
-        mBaseContianer.addView(mSuccessView);
+        mBaseContainer.addView(mSuccessView);
 
         // 加载中界面
         mLoadingView = loadLoadingView(inflater, container);
-        mBaseContianer.addView(mLoadingView);
+        mBaseContainer.addView(mLoadingView);
 
         // 错误界面
         mErrorView = loadErrorView(inflater, container);
-        mBaseContianer.addView(mErrorView);
+        mBaseContainer.addView(mErrorView);
 
         // 空白界面
         mEmptyView = loadEmptyView(inflater, container);
-        mBaseContianer.addView(mEmptyView);
+        mBaseContainer.addView(mEmptyView);
 
         setUpState(State.NONE);
     }

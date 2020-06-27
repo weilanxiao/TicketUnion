@@ -5,31 +5,37 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.miyako.ticketunion.utils.LogUtils;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private static final String TAG = "BaseActivity";
+    protected final String TAG = getClass().getSimpleName();
 
     private Unbinder mBinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogUtils.d(TAG, "onCreate");
         setContentView(getLayoutResId());
         mBinder = ButterKnife.bind(this);
         initView();
         initListener();
+        initPresenter();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LogUtils.d(TAG, "onDestroy");
         if (mBinder != null) {
             mBinder.unbind();
             mBinder = null;
         }
+        release();
     }
 
     /**
@@ -47,4 +53,16 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 初始化监听器相关
      */
     protected abstract void initListener();
+
+    /**
+     * 初始化Presenter相关
+     */
+    protected abstract void initPresenter();
+
+    /**
+     * 子类释放资源
+     */
+    protected void release() {
+        LogUtils.d(TAG, "release");
+    }
 }
