@@ -28,17 +28,13 @@ public class CategoryPagerAdapter extends RecyclerView.Adapter<CategoryPagerAdap
     private static final String TAG = "CategoryPagerAdapter";
     private List<HomePagerContent.DataBean> mList;
     private int cnt = 0;
+    private OnListItemClickListener mListener;
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LogUtils.d(TAG, "onCreateViewHolder"+"..."+(cnt++));
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_pager_content, parent, false);
-//        if (viewType == 1){//标题
-//            item.setTag(true);
-//        }else{
-//            item.setTag(false);
-//        }
         return new ViewHolder(item);
 //        return ViewHolder.getViewHolder(parent, viewType);
     }
@@ -48,6 +44,12 @@ public class CategoryPagerAdapter extends RecyclerView.Adapter<CategoryPagerAdap
         LogUtils.d(TAG, "onBindViewHolder");
         HomePagerContent.DataBean bean = mList.get(position);
         holder.setData(bean);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onItemClick(mList.get(position));
+            }
+        });
     }
 
     @Override
@@ -133,5 +135,13 @@ public class CategoryPagerAdapter extends RecyclerView.Adapter<CategoryPagerAdap
             mTvCurPrise.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             mTvCount.setText(itemView.getContext().getString(R.string.format_goods_sell_count, bean.getVolume()));
         }
+    }
+
+    public void setOnListItemClickListener(OnListItemClickListener listener) {
+        this.mListener = listener;
+    }
+
+    public interface OnListItemClickListener {
+        void onItemClick(HomePagerContent.DataBean item);
     }
 }

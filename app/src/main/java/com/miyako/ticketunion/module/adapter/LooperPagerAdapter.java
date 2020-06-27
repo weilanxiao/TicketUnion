@@ -21,8 +21,9 @@ public class LooperPagerAdapter extends PagerAdapter {
     private static final String TAG = "LooperPagerAdapter";
 
     private List<HomePagerContent.DataBean> mList;
+    private OnLooperItemClickListener mListener;
 
-//    @Override
+    //    @Override
 //    public int getCount() {
 //        return mList == null ? 0 : mList.size();
 //    }
@@ -62,6 +63,7 @@ public class LooperPagerAdapter extends PagerAdapter {
         Glide.with(container.getContext())
                 .load(url)
                 .into(iv);
+        iv.setOnClickListener(s->mListener.onItemClick(mList.get(index)));
         container.addView(iv);
         return iv;
     }
@@ -88,5 +90,13 @@ public class LooperPagerAdapter extends PagerAdapter {
 
     public int getDataSize() {
         return mList == null ? 0 : mList.size();
+    }
+
+    public void setOnLooperItemClickListener(OnLooperItemClickListener listener) {
+        this.mListener = listener;
+    }
+
+    public interface OnLooperItemClickListener {
+        void onItemClick(HomePagerContent.DataBean item);
     }
 }

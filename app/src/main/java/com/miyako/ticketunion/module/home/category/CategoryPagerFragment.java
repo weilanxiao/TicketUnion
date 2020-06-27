@@ -1,5 +1,6 @@
 package com.miyako.ticketunion.module.home.category;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -19,12 +20,15 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.miyako.ticketunion.R;
 import com.miyako.ticketunion.base.BaseFragment;
 import com.miyako.ticketunion.base.Constants;
+import com.miyako.ticketunion.custom.AutoLooperViewPager;
 import com.miyako.ticketunion.custom.TbNestedScrollView;
 import com.miyako.ticketunion.model.domain.Categories;
 import com.miyako.ticketunion.model.domain.HomePagerContent;
 import com.miyako.ticketunion.module.adapter.CategoryPagerAdapter;
 import com.miyako.ticketunion.module.adapter.LooperPagerAdapter;
+import com.miyako.ticketunion.module.ticket.TicketActivity;
 import com.miyako.ticketunion.utils.LogUtils;
+import com.miyako.ticketunion.utils.PresenterManager;
 import com.miyako.ticketunion.utils.SizeUtils;
 import com.miyako.ticketunion.utils.ToastUtils;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
@@ -47,7 +51,7 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
     @BindView(R.id.home_pager_content_list)
     RecyclerView mContentListView;
     @BindView(R.id.home_pager_content_looper)
-    ViewPager mVpLooper;
+    AutoLooperViewPager mVpLooper;
     @BindView(R.id.tv_home_pager_title_part)
     TextView mTvTitle;
     @BindView(R.id.layout_home_pager_looper_point)
@@ -74,6 +78,18 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
         bundle.putInt(Constants.KEY_HOME_PAGER_MATERIAL_ID, category.getId());
         homePagerFragment.setArguments(bundle);
         return homePagerFragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mVpLooper.startLoop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mVpLooper.stopLoop();
     }
 
     @Override
@@ -183,6 +199,39 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
                 }
             }
         });
+
+        mAdapter.setOnListItemClickListener(this::onItemClick);
+        mLooperAdapter.setOnLooperItemClickListener(this::onLoopItemClick);
+    }
+
+    /**
+     * 轮播图适配器item点击回调
+     * @param item 具体点击的轮播图
+     */
+    private void  onLoopItemClick(HomePagerContent.DataBean item) {
+        LogUtils.d(TAG, "onLoopItemClick:"+item.getTitle());
+        handleItemClick(item);
+    }
+
+    /**
+     * 分类适配器item点击回调
+     * @param item 具体点击的数据
+     */
+    private void onItemClick(HomePagerContent.DataBean item) {
+        LogUtils.d(TAG, "onItemClick:"+item.getTitle());
+        handleItemClick(item);
+    }
+
+    /**
+     * 处理点击事件
+     * @param item 数据
+     */
+    private void handleItemClick(HomePagerContent.DataBean item) {
+        String title = item.getTitle();
+        String url = item.getClick_url();
+        String cover = item.getPict_url();
+        PresenterManager.getInstance().getTicketPresenter().getTicket(title, url, cover);
+        startActivity(new Intent(getContext(), TicketActivity.class));
     }
 
     private void updateLooperPoint(int position) {
@@ -199,7 +248,7 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
     @Override
     protected void initPresenter() {
         super.initPresenter();
-        mPresenter = CategoryPagerPresenter.getInstance();
+        mPresenter = PresenterManager.getInstance().getCategoryPagerPresenter();
         mPresenter.bind(this);
     }
 
@@ -306,5 +355,7 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
 
             mLayoutLooperPoint.addView(point);
         }
+
+//        mVpLooper.startLoop();
     }
 }

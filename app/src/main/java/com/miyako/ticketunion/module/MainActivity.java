@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miyako.ticketunion.R;
+import com.miyako.ticketunion.base.BaseActivity;
 import com.miyako.ticketunion.base.BaseFragment;
 import com.miyako.ticketunion.module.home.HomeFragment;
 import com.miyako.ticketunion.module.recommend.RecommendFragment;
@@ -20,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -31,32 +32,14 @@ public class MainActivity extends AppCompatActivity {
     private RedPacketFragment mRedPacketFragment;
     private SearchFragment mSearchFragment;
     private FragmentManager mFm;
-    private Unbinder mBind;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mBind = ButterKnife.bind(this);
-        initView();
-        initFragment();
-        initListener();
+    public int getLayoutResId() {
+        return R.layout.activity_main;
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBind != null) {
-            mBind.unbind();
-            mBind = null;
-        }
-    }
-
-    private void initView() {
-
-    }
-
-    private void initFragment() {
+    public void initView() {
         mHomeFragment = new HomeFragment();
         mRecommendFragment = new RecommendFragment();
         mRedPacketFragment = new RedPacketFragment();
@@ -65,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         switchFragment(mHomeFragment);
     }
 
-    private void initListener() {
+    @Override
+    public void initListener() {
         mNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_nav_home:

@@ -25,17 +25,6 @@ public class CategoryPagerPresenter implements CategoryPagerContract.IHomePagerP
     private List<CategoryPagerContract.IHomePagerView> mViewList;
     private Map<Integer, Integer> pagesInfo = new HashMap<>();
 
-    private CategoryPagerPresenter() {}
-
-    private static CategoryPagerPresenter sInstance = null;
-
-    public static CategoryPagerPresenter getInstance() {
-        if (sInstance == null) {
-            sInstance = new CategoryPagerPresenter();
-        }
-        return sInstance;
-    }
-
     @Override
     public void getContentByCategoryId(int categoryId) {
         for (CategoryPagerContract.IHomePagerView view : mViewList) {
