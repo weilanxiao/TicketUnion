@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -228,7 +229,13 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
      */
     private void handleItemClick(HomePagerContent.DataBean item) {
         String title = item.getTitle();
-        String url = item.getClick_url();
+        // 详情地址
+        String url;
+        if (!TextUtils.isEmpty(item.getCoupon_click_url())) {
+            url = item.getCoupon_click_url();
+        } else {
+            url = item.getClick_url();
+        }
         String cover = item.getPict_url();
         // 为什么请求数据不在自己的activity中呢?
         PresenterManager.getInstance().getTicketPresenter().getTicket(title, url, cover);

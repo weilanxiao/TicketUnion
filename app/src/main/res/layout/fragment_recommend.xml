@@ -5,10 +5,39 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="推荐"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="@string/recommend_title"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorRecommendCategoryChecked"
+        android:orientation="horizontal">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommend_category_list"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorRecommendCategoryNormal"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommend_category_content_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
 
 </LinearLayout>

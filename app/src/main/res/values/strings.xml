@@ -14,4 +14,9 @@
     <string name="format_goods_sell_count">%1$d人已购买</string>
     <string name="format_home_pager_title_part">%1$s</string>
     <string name="tv_tao_kou_ling">淘口令</string>
+    <string name="recommend_title">精选推荐</string>
+    <string name="format_recommend_category">%1$s</string>
+    <string name="format_recommend_category_content">%1$s</string>
+    <string name="format_recommend_content_price">原价: %1$s元</string>
+    <string name="format_recommend_category_off_price">%1$s</string>
 </resources>

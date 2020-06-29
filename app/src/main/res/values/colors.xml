@@ -9,4 +9,6 @@
     <color name="colorTabSelected">#ffffff</color>
     <color name="colorTMail">#d0021b</color>
     <color name="colorPagerBg">#efeeee</color>
+    <color name="colorRecommendCategoryChecked">#EFEEEE</color>
+    <color name="colorRecommendCategoryNormal">#FFFFFF</color>
 </resources>
