@@ -1,12 +1,9 @@
 package com.miyako.ticketunion.module.adapter;
 
-import android.content.Context;
-import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.miyako.ticketunion.R;
-import com.miyako.ticketunion.model.domain.HomePagerContent;
 import com.miyako.ticketunion.model.domain.RecommendContent;
 import com.miyako.ticketunion.utils.LogUtils;
 import com.miyako.ticketunion.utils.UrlUtils;
@@ -49,7 +45,9 @@ public class RecommendContentAdapter extends RecyclerView.Adapter<RecommendConte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onItemClick(mList.get(position));
+                if (mListener != null) {
+                    mListener.onItemClick(mList.get(position));
+                }
             }
         });
     }
@@ -113,8 +111,8 @@ public class RecommendContentAdapter extends RecyclerView.Adapter<RecommendConte
             String price = bean.getReserve_price();
             LogUtils.d(TAG, "prise:" + price);
             if (!TextUtils.isEmpty(bean.getCoupon_click_url())) {
-                mTvOffPrice.setText(itemView.getContext().getString(R.string.format_recommend_category_off_price, bean.getCoupon_info()));
-                mTvPrice.setText(itemView.getContext().getString(R.string.format_recommend_content_price, price));
+                mTvOffPrice.setText(itemView.getContext().getString(R.string.format_recommend_category_off_info, bean.getCoupon_info()));
+                mTvPrice.setText(itemView.getContext().getString(R.string.format_recommend_content_pre_price, price));
             } else {
                 mTvPrice.setText("晚了，没有优惠券了");
                 mTvOffPrice.setVisibility(View.GONE);

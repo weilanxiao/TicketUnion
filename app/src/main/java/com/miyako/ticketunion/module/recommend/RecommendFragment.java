@@ -1,7 +1,9 @@
 package com.miyako.ticketunion.module.recommend;
 
 
+import android.content.Intent;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -16,6 +18,7 @@ import com.miyako.ticketunion.model.domain.RecommendCategories;
 import com.miyako.ticketunion.model.domain.RecommendContent;
 import com.miyako.ticketunion.module.adapter.RecommendCategoryAdapter;
 import com.miyako.ticketunion.module.adapter.RecommendContentAdapter;
+import com.miyako.ticketunion.module.ticket.TicketActivity;
 import com.miyako.ticketunion.utils.LogUtils;
 import com.miyako.ticketunion.utils.PresenterManager;
 import com.miyako.ticketunion.utils.SizeUtils;
@@ -81,7 +84,19 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     }
 
     private void onContentClick(RecommendContent.DataBean.TbkUatmFavoritesItemGetResponseBean.ResultsBean.UatmTbkItemBean dataBean) {
-
+        LogUtils.d(TAG, "onContentClick:"+dataBean.getTitle());
+        String title = dataBean.getTitle();
+        // 详情地址
+        String url;
+        if (!TextUtils.isEmpty(dataBean.getCoupon_click_url())) {
+            url = dataBean.getCoupon_click_url();
+        } else {
+            url = dataBean.getClick_url();
+        }
+        String cover = dataBean.getPict_url();
+        // 为什么请求数据不在自己的activity中呢?
+        PresenterManager.getInstance().getTicketPresenter().getTicket(title, url, cover);
+        startActivity(new Intent(getContext(), TicketActivity.class));
     }
 
     @Override

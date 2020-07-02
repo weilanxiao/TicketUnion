@@ -2,6 +2,7 @@ package com.miyako.ticketunion.model.api;
 
 import com.miyako.ticketunion.model.domain.Categories;
 import com.miyako.ticketunion.model.domain.HomePagerContent;
+import com.miyako.ticketunion.model.domain.OnSellContent;
 import com.miyako.ticketunion.model.domain.RecommendCategories;
 import com.miyako.ticketunion.model.domain.RecommendContent;
 import com.miyako.ticketunion.model.domain.TicketResult;
@@ -30,4 +31,7 @@ public interface Api {
 
     @GET("recommend/{categoryId}")
     Call<RecommendContent> getRecommendContent(@Path("categoryId") int categoryId);
+
+    @GET("onSell/{page}")
+    Call<OnSellContent> getOnSellContent(@Path("page") int page);
 }

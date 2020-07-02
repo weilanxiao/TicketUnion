@@ -311,6 +311,7 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
 
     @Override
     public void onLoadMoreSuccess(List<HomePagerContent.DataBean> contentList) {
+        LogUtils.d(TAG, "onLoadMoreSuccess");
         mAdapter.addData(contentList);
 //        if (mLayoutRefresh != null) {
 //            LogUtils.d(TAG, "onLoadMoreSuccess");
@@ -319,7 +320,6 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
 //        }
 
         if (mRefreshLayout != null) {
-            LogUtils.d(TAG, "onLoadMoreSuccess");
             ToastUtils.showToast("加载了"+contentList.size()+"条数据");
             mRefreshLayout.finishLoadMore();
         }

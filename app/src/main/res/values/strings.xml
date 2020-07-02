@@ -17,6 +17,11 @@
     <string name="recommend_title">精选推荐</string>
     <string name="format_recommend_category">%1$s</string>
     <string name="format_recommend_category_content">%1$s</string>
-    <string name="format_recommend_content_price">原价: %1$s元</string>
-    <string name="format_recommend_category_off_price">%1$s</string>
+    <string name="format_recommend_content_pre_price">原价: %1$s元</string>
+    <string name="format_recommend_category_off_info">%1$s</string>
+    <string name="red_packet_title" >特惠宝贝</string>
+    <string name="format_red_packet_content">%1$s</string>
+    <string name="format_red_packet_pre_price">￥%1$s</string>
+    <string name="format_red_packet_off_price">券后价: %1$.02f元</string>
+    <string name="format_red_packet_off_info" >%1$s</string>
 </resources>
