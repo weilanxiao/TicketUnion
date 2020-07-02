@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_red_packet_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/layout_red_packet_pager_header"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/colorPrimary">
@@ -23,20 +25,28 @@
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_red_packet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
 
-        <LinearLayout
+        <com.miyako.ticketunion.custom.TbNestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorRecommendCategoryChecked"
-            android:orientation="horizontal">
+            android:overScrollMode="never">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/red_packet_list"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorRecommendCategoryNormal" />
-        </LinearLayout>
+                android:background="@color/colorRecommendCategoryChecked"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/red_packet_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRecommendCategoryNormal"
+                    android:overScrollMode="never" />
+            </LinearLayout>
+        </com.miyako.ticketunion.custom.TbNestedScrollView>
 
         <com.scwang.smart.refresh.footer.ClassicsFooter
             android:layout_width="match_parent"

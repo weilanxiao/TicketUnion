@@ -148,7 +148,7 @@ public class CategoryPagerFragment extends BaseFragment implements CategoryPager
                 int height = mLayoutHomePager.getMeasuredHeight();
 //                int width = mLayoutHomePager.getMeasuredWidth();
 //                LogUtils.d(TAG, "height:"+height+", width:"+width);
-                // 设置滑动内容只有列表滑动，轮播图不滑动
+
                 ViewGroup.LayoutParams layoutParams = mContentListView.getLayoutParams();
                 layoutParams.height = height;
                 mContentListView.setLayoutParams(layoutParams);

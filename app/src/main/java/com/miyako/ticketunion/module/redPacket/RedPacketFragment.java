@@ -1,8 +1,13 @@
 package com.miyako.ticketunion.module.redPacket;
 
 
+import android.content.Intent;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,6 +18,7 @@ import com.miyako.ticketunion.R;
 import com.miyako.ticketunion.base.BaseFragment;
 import com.miyako.ticketunion.model.domain.OnSellContent;
 import com.miyako.ticketunion.module.adapter.RedPacketContentAdapter;
+import com.miyako.ticketunion.module.ticket.TicketActivity;
 import com.miyako.ticketunion.utils.LogUtils;
 import com.miyako.ticketunion.utils.PresenterManager;
 import com.miyako.ticketunion.utils.SizeUtils;
@@ -28,6 +34,14 @@ public class RedPacketFragment extends BaseFragment implements RedPacketContract
 
     private RedPacketPresenter mPresenter;
     private RedPacketContentAdapter mAdapter;
+
+
+    @BindView(R.id.layout_red_packet_pager)
+    LinearLayout mLayoutPager;
+    @BindView(R.id.layout_red_packet_pager_header)
+    LinearLayout mLayoutPagerHeader;
+
+
 
     @BindView(R.id.red_packet_list)
     RecyclerView mRvContent;
@@ -74,6 +88,27 @@ public class RedPacketFragment extends BaseFragment implements RedPacketContract
     @Override
     protected void initListener() {
         super.initListener();
+        // 设置根布局监听器
+        mLayoutPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (mLayoutPagerHeader == null) {
+                    return;
+                }
+
+                int height = mLayoutPager.getMeasuredHeight();
+                int height1 = mLayoutPagerHeader.getMeasuredHeight();
+                ViewGroup.LayoutParams layoutParams = mRvContent.getLayoutParams();
+                layoutParams.height = height - height1;
+                mRvContent.setLayoutParams(layoutParams);
+                if (height != 0) {
+                    // 移除当前视图
+                    mLayoutPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
+
+        mAdapter.setOnListItemClickListener(this::onItemClick);
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
@@ -83,6 +118,22 @@ public class RedPacketFragment extends BaseFragment implements RedPacketContract
                 }
             }
         });
+    }
+
+    private void onItemClick(OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean item) {
+        LogUtils.d(TAG, "onItemClick:"+item.getTitle());
+        String title = item.getTitle();
+        // 详情地址
+        String url;
+        if (!TextUtils.isEmpty(item.getCoupon_click_url())) {
+            url = item.getCoupon_click_url();
+        } else {
+            url = item.getClick_url();
+        }
+        String cover = item.getPict_url();
+        // 为什么请求数据不在自己的activity中呢?
+        PresenterManager.getInstance().getTicketPresenter().getTicket(title, url, cover);
+        startActivity(new Intent(getContext(), TicketActivity.class));
     }
 
     @Override
@@ -120,6 +171,9 @@ public class RedPacketFragment extends BaseFragment implements RedPacketContract
     @Override
     public void onLoadMoreEmpty() {
         LogUtils.d(TAG, "onLoadMoreEmpty");
+        if (mRefreshLayout != null) {
+            mRefreshLayout.finishLoadMore();
+        }
     }
 
     @Override

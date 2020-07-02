@@ -118,7 +118,7 @@ public class CategoryPagerAdapter extends RecyclerView.Adapter<CategoryPagerAdap
             int height = params.height;
             int size = Math.max(width, height) / 2;
             String url = UrlUtils.coverPath(bean.getPict_url()+String.format("_%dx%d.jpg", size, size));
-            LogUtils.d(TAG, "cover url:"+url);
+//            LogUtils.d(TAG, "cover url:"+url);
             Glide.with(itemView.getContext())
                     .load(url)
                     .into(mIvCover);
@@ -126,9 +126,9 @@ public class CategoryPagerAdapter extends RecyclerView.Adapter<CategoryPagerAdap
             long offPrise = bean.getCoupon_amount();
             String curPrise = bean.getZk_final_price();
             float afterPrise = Float.parseFloat(curPrise) - offPrise;
-            LogUtils.d(TAG, "off prise:" + offPrise);
-            LogUtils.d(TAG, "cur prise:" + curPrise);
-            LogUtils.d(TAG, "after prise:" + afterPrise);
+//            LogUtils.d(TAG, "off prise:" + offPrise);
+//            LogUtils.d(TAG, "cur prise:" + curPrise);
+//            LogUtils.d(TAG, "after prise:" + afterPrise);
             mTvOffPrise.setText(itemView.getContext().getString(R.string.format_goods_off_prise, offPrise));
             mTvAfterPrise.setText(itemView.getContext().getString(R.string.format_goods_after_prise, afterPrise));
             mTvCurPrise.setText(itemView.getContext().getString(R.string.format_goods_cur_prise, curPrise));

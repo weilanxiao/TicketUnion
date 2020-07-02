@@ -25,6 +25,7 @@ public class RedPacketPresenter implements RedPacketContract.IRedPacketPresenter
     public RedPacketPresenter() {
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         mApi = retrofit.create(Api.class);
+        mCurrentPage = 1;
     }
 
     @Override
@@ -120,6 +121,7 @@ public class RedPacketPresenter implements RedPacketContract.IRedPacketPresenter
 
     private void handleLoadMoreEmpty() {
         LogUtils.d(TAG, "handleLoadMoreEmpty");
+        mView.onLoadMoreEmpty();
     }
 
     private void handleOnSellContent(OnSellContent content) {
