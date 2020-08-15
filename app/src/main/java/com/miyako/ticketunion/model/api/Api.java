@@ -5,6 +5,8 @@ import com.miyako.ticketunion.model.domain.HomePagerContent;
 import com.miyako.ticketunion.model.domain.OnSellContent;
 import com.miyako.ticketunion.model.domain.RecommendCategories;
 import com.miyako.ticketunion.model.domain.RecommendContent;
+import com.miyako.ticketunion.model.domain.SearchRecommend;
+import com.miyako.ticketunion.model.domain.SearchResult;
 import com.miyako.ticketunion.model.domain.TicketResult;
 
 import retrofit2.Call;
@@ -34,4 +36,10 @@ public interface Api {
 
     @GET("onSell/{page}")
     Call<OnSellContent> getOnSellContent(@Path("page") int page);
+
+    @GET("search")
+    Call<SearchResult> getSearch(@Query("keyword") String keyword, @Query("page") int page);
+
+    @GET("search/recommend")
+    Call<SearchRecommend> getSearchRecommend();
 }

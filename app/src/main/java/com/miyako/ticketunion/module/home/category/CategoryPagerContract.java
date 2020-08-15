@@ -6,7 +6,7 @@ import com.miyako.ticketunion.model.domain.HomePagerContent;
 
 import java.util.List;
 
-public class CategoryPagerContract {
+public interface CategoryPagerContract {
 
     public interface IHomePagerPresenter extends IBasePresenter<IHomePagerView> {
 

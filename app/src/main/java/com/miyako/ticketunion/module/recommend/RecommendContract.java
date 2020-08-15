@@ -5,7 +5,7 @@ import com.miyako.ticketunion.base.IBaseView;
 import com.miyako.ticketunion.model.domain.RecommendCategories;
 import com.miyako.ticketunion.model.domain.RecommendContent;
 
-public class RecommendContract {
+public interface RecommendContract {
 
     public interface IRecommendPresenter extends IBasePresenter<IRecommendView> {
 

@@ -4,6 +4,7 @@ import com.miyako.ticketunion.module.home.HomePresenter;
 import com.miyako.ticketunion.module.home.category.CategoryPagerPresenter;
 import com.miyako.ticketunion.module.recommend.RecommendPresenter;
 import com.miyako.ticketunion.module.redPacket.RedPacketPresenter;
+import com.miyako.ticketunion.module.search.SearchPresenter;
 import com.miyako.ticketunion.module.ticket.TicketPresenter;
 
 /**
@@ -20,6 +21,7 @@ public class PresenterManager {
     private final TicketPresenter mTicketPresenter;
     private final RecommendPresenter mRecommendPresenter;
     private final RedPacketPresenter mRedPacketPresenter;
+    private final SearchPresenter mSearchPresenter;
 
     private PresenterManager() {
         LogUtils.d(TAG, "创建Presenter管理单例类");
@@ -28,6 +30,7 @@ public class PresenterManager {
         mTicketPresenter = new TicketPresenter();
         mRecommendPresenter = new RecommendPresenter();
         mRedPacketPresenter = new RedPacketPresenter();
+        mSearchPresenter = new SearchPresenter();
     }
 
     public static PresenterManager getInstance() {
@@ -53,4 +56,9 @@ public class PresenterManager {
     public RedPacketPresenter getRedPacketPresenter() {
         return mRedPacketPresenter;
     }
+
+    public SearchPresenter getSearchPresenter() {
+        return mSearchPresenter;
+    }
+
 }

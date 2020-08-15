@@ -4,7 +4,7 @@ import com.miyako.ticketunion.base.IBasePresenter;
 import com.miyako.ticketunion.base.IBaseView;
 import com.miyako.ticketunion.model.domain.TicketResult;
 
-public class TicketContract {
+public interface TicketContract {
 
     public interface ITicketPresenter extends IBasePresenter<ITicketView> {
 

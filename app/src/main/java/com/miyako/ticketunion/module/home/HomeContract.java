@@ -4,7 +4,7 @@ import com.miyako.ticketunion.base.IBasePresenter;
 import com.miyako.ticketunion.base.IBaseView;
 import com.miyako.ticketunion.model.domain.Categories;
 
-public class HomeContract {
+public interface HomeContract {
 
     public interface IHomePresenter extends IBasePresenter<IHomeView> {
         /**
